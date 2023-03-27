@@ -22,7 +22,7 @@ typedef struct{
 	int decimals;
 }statscan;
 	
-	
+	//https://www.youtube.com/watch?v=rbVt5v8NNe8&t=369s&ab_channel=PortfolioCourses
 	
 int main(void){
 	
