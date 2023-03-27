@@ -22,7 +22,7 @@ typedef struct{
 	int decimals;
 }statscan;
 	
-	//https://www.youtube.com/watch?v=rbVt5v8NNe8&t=369s&ab_channel=PortfolioCourses
+	//
 	
 int main(void){
 	
@@ -42,7 +42,7 @@ int main(void){
 	do{
 		
 	
-		read = fscanf(file,"%d,%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%d,%49[^,] ,%d,%49[^,],%49[^,],%lf %c %c %c %d\n",
+		read = fscanf(file,"%d,%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%d,%49[^,],%d,%49[^,],%49[^,],%lf,%c,%c,%c,%d\n",
 			                     &stats[records].date,
                                  stats[records].geo,
                                  stats[records].dguid,
@@ -63,6 +63,7 @@ int main(void){
 	                             &stats[records].decimals);
 
 		if(read == 18){
+
 			records++;
 		}
 		
@@ -84,9 +85,9 @@ int main(void){
 	printf("\n%d records read. \n\n", records);
 	
 	
-	printf("|REF_DATE (year) \t\t|\tGeo \t\t| \tAge Group \t\t|\tSex\t\t|\t Value \t\t|");
+	printf("|\tREF_DATE (year) \t\t|\tGeo \t\t| \tAge Group \t\t|\tSex\t\t|\t Value \t\t|");
 	for (int i = 0; i< records; i++){
-		printf("|%d|%s|%s|%s|%.2lf|", stats[i].date,
+		printf("|\t%d\t|\t%s\t|\t%s\t|\t%s\t|\t%.2lf\t|", stats[i].date,
 		                              stats[i].geo,
 		                              stats[i].agegroup,
 		                              stats[i].sex,
