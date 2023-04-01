@@ -32,7 +32,7 @@ struct data{
 	double value;
 };
 
-void yearlyaverages(char str[], struct data arr[], int row){
+double yearlyaverages(char str[], struct data arr[], int row){
 	double sumavg = 0, numofinstances = 0;
 	double sum2015avg = 0, num2015ofinstances = 0;
 	double sum2016avg = 0, num2016ofinstances = 0;
@@ -92,7 +92,7 @@ void yearlyaverages(char str[], struct data arr[], int row){
 	}
 	double avg = sumavg/numofinstances;
 	printf("%s Total Average: %.2lf\n\n", str, avg);
-	printf("%s Yearly Average\n-------------------\n", str);
+	printf("%s Yearly Averages\n-------------------\n", str);
 	printf("2015 Average: %.2lf\n", sum2015avg/num2015ofinstances);
 	printf("2016 Average: %.2lf\n", sum2016avg/num2016ofinstances);
 	printf("2017 Average: %.2lf\n", sum2017avg/num2017ofinstances);
@@ -100,6 +100,54 @@ void yearlyaverages(char str[], struct data arr[], int row){
 	printf("2019 Average: %.2lf\n", sum2019avg/num2019ofinstances);
 	printf("2020 Average: %.2lf\n", sum2020avg/num2020ofinstances);
 	printf("2021 Average: %.2lf\n\n", sum2021avg/num2021ofinstances);
+	
+	return (avg);
+}
+	
+void agegroupaverages(char str[], struct data arr[], int row){
+	double sumavg = 0, numofinstances = 0;
+	double sum35_49avg = 0, num35_49ofinstances = 0;
+	double sum50_64avg = 0, num50_64ofinstances = 0;
+	double sum65avg = 0, num65ofinstances = 0;
+	
+	char pt1[50] = "\"";
+	char pt2[50] = "\"";
+	strcat(pt1, str);
+	strcat(pt1,pt2);
+	
+	for(int i = 0; i < row+1; i++){
+		if(!strcmp(arr[i].geo, pt1)){
+			
+			numofinstances++;
+			sumavg += arr[i].value;
+		}
+	}
+	for(int i = 0; i < row+1; i++){
+		if(!strcmp(arr[i].geo, pt1)){
+			
+			if(!strcmp(arr[i].agegroup, "\"35 to 49 years\"")){
+				
+			num35_49ofinstances++;
+			sum35_49avg += arr[i].value;
+			
+		   }else if(!strcmp(arr[i].agegroup, "\"50 to 64 years\"")){
+			
+			num50_64ofinstances++;
+			sum50_64avg += arr[i].value;
+			}else if(!strcmp(arr[i].agegroup, "\"65 years and over\"")){
+				
+				num65ofinstances++;
+				sum65avg += arr[i].value;
+				
+			}
+		}
+	}
+	
+	printf("%s Age Group Averages\n----------------------------------------\n", str);
+	printf("35 to 49 years Age Group Average: %.2lf\n", sum35_49avg/num35_49ofinstances);
+	printf("50 to 64 years Age Group Average: %.2lf\n", sum50_64avg/num50_64ofinstances);
+	printf("65 years and over Age Group Average: %.2lf\n\n", sum65avg/num65ofinstances);
+	
 }
 	
 int main(void){
@@ -126,12 +174,10 @@ int main(void){
 		token = strtok(line,",\"");
 		if(token == NULL || token[0] == '\0') continue;
 		stats.date = atoi(token);
-		dataform.date = atoi(token);
     
 		token = strtok(NULL,",");
 		if(token == NULL || token[0] == '\0') continue;
 		strcpy(stats.geo, token);
-		strcpy(dataform.geo, token);
 			
 		token = strtok(NULL,",");
 		if(token == NULL || token[0] == '\0') continue;
@@ -140,12 +186,10 @@ int main(void){
 		token = strtok(NULL,",");
 		if(token == NULL || token[0] == '\0') continue;
 		strcpy(stats.agegroup, token);
-		strcpy(dataform.agegroup, token);
     
 		token = strtok(NULL,",");
 		if(token == NULL || token[0] == '\0') continue;
 		strcpy(stats.sex, token);
-		strcpy(dataform.sex, token);
 			
 		token = strtok(NULL,",");
 		if(token == NULL || token[0] == '\0') continue;
@@ -182,7 +226,6 @@ int main(void){
 		token = strtok(NULL,",\"");
 		if(token == NULL || token[0] == '\0') continue;
 		stats.value = atof(token);
-		dataform.value = atof(token);
     
 		token = strtok(NULL,",");
 		if(token == NULL || token[0] == '\0') continue;
@@ -289,20 +332,102 @@ int main(void){
 		datalist[counter] = dataform;
 		counter++;
 	}
+	fclose(file);
+	fclose(file2);
 	
+	double canavg, queavg, ontavg, albavg, bcavg;
 	
 	printf("The average percetage of the population that is diagnosed with diabetes (for all years and age groups):\n\n");
 	
-	yearlyaverages("Canada (excluding territories)", datalist, row);
+	canavg = yearlyaverages("Canada (excluding territories)", datalist, row);
 	
-	yearlyaverages("Quebec", datalist, row);
+	queavg = yearlyaverages("Quebec", datalist, row);
 	
-	yearlyaverages("Ontario", datalist, row);
+	ontavg = yearlyaverages("Ontario", datalist, row);
 	
-	yearlyaverages("Alberta", datalist, row);
+	albavg = yearlyaverages("Alberta", datalist, row);
 	
-	yearlyaverages("British Columbia", datalist, row);
+	bcavg = yearlyaverages("British Columbia", datalist, row);
 	
+	agegroupaverages("Canada (excluding territories)", datalist, row);
 	
+	agegroupaverages("Quebec", datalist, row);
+	
+	agegroupaverages("Ontario", datalist, row);
+	
+	agegroupaverages("Alberta", datalist, row);
+	
+	agegroupaverages("British Columbia", datalist, row);
+	
+	if(queavg > ontavg && queavg > albavg && queavg > bcavg)
+		printf("Quebec has the highest percentage of diabetes (all years and age groups together)\n\n");
+	if(ontavg > queavg && ontavg > albavg && ontavg > bcavg)
+		printf("Ontario has the highest percentage of diabetes (all years and age groups together)\n\n");
+	if(albavg > ontavg && albavg > queavg && albavg > bcavg)
+		printf("Alberta has the highest percentage of diabetes (all years and age groups together)\n\n");
+	if(bcavg > ontavg && bcavg > albavg && bcavg > queavg)
+		printf("British Columbia has the highest percentage of diabetes (all years and age groups together)\n\n");
+	
+	if(queavg < ontavg && queavg<albavg && queavg<bcavg)
+		printf("Quebec has the lowest percentage of diabetes (all years and age groups together)\n\n");
+	if(ontavg<queavg && ontavg<albavg && ontavg<bcavg)
+		printf("Ontario has the lowest percentage of diabetes (all years and age groups together)\n\n");
+	if(albavg<ontavg && albavg<queavg && albavg<bcavg)
+		printf("Alberta has the lowest percentage of diabetes (all years and age groups together)\n\n");
+	if(bcavg<ontavg && bcavg<albavg && bcavg<queavg)
+		printf("British Columbia has the lowest percentage of diabetes (all years and age groups together)\n\n");
+	
+	if(queavg > canavg)
+		printf("Quebec has a diabetes percentage above the national average\n\n");
+	else if(queavg == canavg)
+		printf("Quebec has a diabetes percentage equal to the national average\n\n");
+	else if(queavg < canavg)
+		printf("Quebec has a diabetes percentage below the national average\n\n");
+		
+	if(ontavg > canavg)
+		printf("Ontario has a diabetes percentage above the national average\n\n");
+	else if(ontavg == canavg)
+		printf("Ontario has a diabetes percentage equal to the national average\n\n");
+	else if(ontavg < canavg)
+		printf("Ontario has a diabetes percentage below the national average\n\n");
+		
+	if(albavg > canavg)
+		printf("Alberta has a diabetes percentage above the national average\n\n");
+	else if(albavg == canavg)
+		printf("Alberta has a diabetes percentage equal to the national average\n\n");
+	else if(albavg < canavg)
+		printf("Alberta has a diabetes percentage below the national average\n\n");
+		
+	if(bcavg > canavg)
+		printf("British Columbia has a diabetes percentage above the national average\n\n");
+	else if(bcavg == canavg)
+		printf("British Columbia has a diabetes percentage equal to the national average\n\n");
+	else if(bcavg < canavg)
+		printf("British Columbia has a diabetes percentage below the national average\n\n");
+		
+	double highestvalue = datalist[0].value, lowestvalue = datalist[0].value;
+	
+	for(int i = 0; i < row + 1; i++){
+		if(highestvalue < datalist[i].value){
+			highestvalue = datalist[i].value;
+		}
+		if(lowestvalue == 0)
+			lowestvalue = datalist[i].value;
+		if(lowestvalue > datalist[i].value){
+			lowestvalue = datalist[i].value;
+		}
+	}
+	
+	//printf("Highest value: %.2lf Lowest value: %.2lf", highestvalue, lowestvalue);
+	printf("Highest percentage of diabetes in all years and all provinces: \n---------------------------------------------------------------\n");
+	for(int i = 0; i < row + 1; i++){
+		if(datalist[i].value == highestvalue)
+			printf("%s, %d, %.2lf\n", datalist[i].geo, datalist[i].date, datalist[i].value);
+	}
+	printf("\nLowest percentage of diabetes in all years and all provinces: \n---------------------------------------------------------------\n");
+	for(int i = 0; i < row + 1; i++){
+		if(datalist[i].value == lowestvalue)
+			printf("%s, %d, %.2lf\n", datalist[i].geo, datalist[i].date, datalist[i].value);
+	}
 	return(0);
-	} 
+} 
