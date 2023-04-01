@@ -155,14 +155,51 @@ void agegroupaverages(char str[], struct data arr[], int row){
 	printf("35 to 49 years Age Group Average: %.2lf\n", sum35_49avg/num35_49ofinstances);
 	printf("50 to 64 years Age Group Average: %.2lf\n", sum50_64avg/num50_64ofinstances);
 	printf("65 years and over Age Group Average: %.2lf\n\n", sum65avg/num65ofinstances);
-	
 }
+
+void agegroupaveragereturn(char str[], struct data arr[], int row, double *group1, double *group2, double *group3){
+	double sumavg = 0, numofinstances = 0;
+	double sum35_49avg = 0, numof35_49instances = 0;
+	double sum50_64avg = 0, numof50_64instances = 0;
+	double sum65avg = 0, numof65instances = 0;
 	
+	char pt1[50] = "\"";
+	char pt2[50] = "\"";
+	strcat(pt1, str);
+	strcat(pt1,pt2);
+	
+	for(int i = 0; i < row+1; i++){
+		if(!strcmp(arr[i].geo, pt1)){
+			numofinstances++;
+			sumavg += arr[i].value;
+		}
+	}
+	for(int i = 0; i < row+1; i++){
+		if(!strcmp(arr[i].geo, pt1)){
+			
+			if(!strcmp(arr[i].agegroup, "\"35 to 49 years\"")){
+				numof35_49instances++;
+				sum35_49avg += arr[i].value;
+		   }else if(!strcmp(arr[i].agegroup, "\"50 to 64 years\"")){
+				numof50_64instances++;
+				sum50_64avg += arr[i].value;
+			}else if(!strcmp(arr[i].agegroup, "\"65 years and over\"")){
+				numof65instances++;
+				sum65avg += arr[i].value;
+			}
+		}
+	}
+	*group1 = (sum35_49avg/numof35_49instances);
+	*group2 = (sum50_64avg/numof50_64instances);
+	*group3 = (sum65avg/numof65instances);
+}
+
 int main(void){
 	
 	FILE *file = fopen("statscan_diabetes.csv", "r");
 	FILE *file2 = fopen("statscan_diabetes.csv", "r");
-	FILE *plot = fopen("plotdata.txt", "w");
+	FILE *line_plot = fopen("line_plot_data.txt", "w");
+	FILE *bar_plot = fopen("bar_plot_data.txt", "w");
 	char line [MAX_LINE_LENGTH];
 	char line2 [MAX_LINE_LENGTH];
 	char *token;
@@ -439,43 +476,48 @@ int main(void){
 			printf("%s, %d, %.2lf\n", datalist[i].geo, datalist[i].date, datalist[i].value);
 	}
 	
-	fprintf(plot, "2015 %lf %lf %lf %lf %lf\n", yearaverage(2015, "Canada (excluding territories)", datalist, row),
+	fprintf(line_plot, "2015 %lf %lf %lf %lf %lf\n", yearaverage(2015, "Canada (excluding territories)", datalist, row),
 												yearaverage(2015, "Quebec", datalist, row),
 												yearaverage(2015, "Ontario", datalist, row),
 												yearaverage(2015, "Alberta", datalist, row),
 												yearaverage(2015, "British Columbia", datalist, row));
-	fprintf(plot, "2016 %lf %lf %lf %lf %lf\n", yearaverage(2016, "Canada (excluding territories)", datalist, row),
+	fprintf(line_plot, "2016 %lf %lf %lf %lf %lf\n", yearaverage(2016, "Canada (excluding territories)", datalist, row),
 												yearaverage(2016, "Quebec", datalist, row),
 												yearaverage(2016, "Ontario", datalist, row),
 												yearaverage(2016, "Alberta", datalist, row),
 												yearaverage(2016, "British Columbia", datalist, row));
-	fprintf(plot, "2017 %lf %lf %lf %lf %lf\n", yearaverage(2017, "Canada (excluding territories)", datalist, row),
+	fprintf(line_plot, "2017 %lf %lf %lf %lf %lf\n", yearaverage(2017, "Canada (excluding territories)", datalist, row),
 												yearaverage(2017, "Quebec", datalist, row),
 												yearaverage(2017, "Ontario", datalist, row),
 												yearaverage(2017, "Alberta", datalist, row),
 												yearaverage(2017, "British Columbia", datalist, row));
-	fprintf(plot, "2018 %lf %lf %lf %lf %lf\n", yearaverage(2018, "Canada (excluding territories)", datalist, row),
+	fprintf(line_plot, "2018 %lf %lf %lf %lf %lf\n", yearaverage(2018, "Canada (excluding territories)", datalist, row),
 												yearaverage(2018, "Quebec", datalist, row),
 												yearaverage(2018, "Ontario", datalist, row),
 												yearaverage(2018, "Alberta", datalist, row),
 												yearaverage(2018, "British Columbia", datalist, row));
-	fprintf(plot, "2019 %lf %lf %lf %lf %lf\n", yearaverage(2019, "Canada (excluding territories)", datalist, row),
+	fprintf(line_plot, "2019 %lf %lf %lf %lf %lf\n", yearaverage(2019, "Canada (excluding territories)", datalist, row),
 												yearaverage(2019, "Quebec", datalist, row),
 												yearaverage(2019, "Ontario", datalist, row),
 												yearaverage(2019, "Alberta", datalist, row),
 												yearaverage(2019, "British Columbia", datalist, row));
-	fprintf(plot, "2020 %lf %lf %lf %lf %lf\n", yearaverage(2020, "Canada (excluding territories)", datalist, row),
+	fprintf(line_plot, "2020 %lf %lf %lf %lf %lf\n", yearaverage(2020, "Canada (excluding territories)", datalist, row),
 												yearaverage(2020, "Quebec", datalist, row),
 												yearaverage(2020, "Ontario", datalist, row),
 												yearaverage(2020, "Alberta", datalist, row),
 												yearaverage(2020, "British Columbia", datalist, row));
-	fprintf(plot, "2021 %lf %lf %lf %lf %lf\n", yearaverage(2021, "Canada (excluding territories)", datalist, row),
+	fprintf(line_plot, "2021 %lf %lf %lf %lf %lf\n", yearaverage(2021, "Canada (excluding territories)", datalist, row),
 												yearaverage(2021, "Quebec", datalist, row),
 												yearaverage(2021, "Ontario", datalist, row),
 												yearaverage(2021, "Alberta", datalist, row),
 												yearaverage(2021, "British Columbia", datalist, row));
 	
-	fclose(plot);
+	double age35_49avg, age50_64avg, age65avg;
+	agegroupaveragereturn("Canada (excluding territories)", datalist, row, &age35_49avg, &age50_64avg, &age65avg);
+	fprintf(bar_plot, "0 35-49 %.2lf\n1 50-64 %.2lf\n2 65+ %.2lf", age35_49avg, age50_64avg, age65avg);
+	
+	fclose(line_plot);
+	fclose(bar_plot);
 	
 	return(0);
 } 
