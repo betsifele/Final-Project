@@ -85,8 +85,13 @@ double yearlyaverages(char str[], struct data arr[], int row){
 		}
 	}
 	double avg = sumavg/numofinstances;
-	printf("%s Total Average: %.2lf\n\n", str, avg);
-	printf("%s Yearly Averages\n-------------------\n", str);
+	/*Question 1
+	 a) Provincial averages (Ontario, Quebec, British Columbia, Alberta). 
+	 One average per province (for all years and age groups).
+	 b)One national (Canada excluding territories) average for all years and age groups.
+	 c)Yearly Averages, One per year for each province and the whole country*/
+	printf("%s Total Average (for all years and age groups): %.2lf\n\n", str, avg);
+	printf("%s Yearly Averages (for all years and age groups)\n-------------------\n", str); 
 	printf("2015 Average: %.2lf\n", sum2015avg/num2015ofinstances);
 	printf("2016 Average: %.2lf\n", sum2016avg/num2016ofinstances);
 	printf("2017 Average: %.2lf\n", sum2017avg/num2017ofinstances);
@@ -150,7 +155,11 @@ void agegroupaverages(char str[], struct data arr[], int row){
 			}
 		}
 	}
-	
+	/*Question 1
+	 
+	 d) The average percentage of diabetes among age groups (35-49, 60-64, 65+).
+	 One average per age group (all years) for each province and the whole country (Canada excluding territories)  
+	 */
 	printf("%s Age Group Averages\n----------------------------------------\n", str);
 	printf("35 to 49 years Age Group Average: %.2lf\n", sum35_49avg/num35_49ofinstances);
 	printf("50 to 64 years Age Group Average: %.2lf\n", sum50_64avg/num50_64ofinstances);
@@ -383,7 +392,7 @@ int main(void){
 	
 	double canavg, queavg, ontavg, albavg, bcavg;
 	
-	printf("The average percetage of the population that is diagnosed with diabetes (for all years and age groups):\n\n");
+	printf("The average percetage of the population that is diagnosed with diabetes (for all years and age groups)\n\n");
 	
 	canavg = yearlyaverages("Canada (excluding territories)", datalist, row);
 	
@@ -405,6 +414,14 @@ int main(void){
 	
 	agegroupaverages("British Columbia", datalist, row);
 	
+	
+	/* 
+	 Question 2
+	 Determine which province has the highest percentage of diabetes (all years and age groups together as calculated in question 1a) 
+	 and which province has the lowest percentage.
+	 */
+	printf("Which province has the highest and lowest percentage of diabetes (all years and age groups together)?\n");
+	printf("-----------------------------------------------------------------------------------------------------\n");
 	if(queavg > ontavg && queavg > albavg && queavg > bcavg)
 		printf("Quebec has the highest percentage of diabetes (all years and age groups together)\n\n");
 	if(ontavg > queavg && ontavg > albavg && ontavg > bcavg)
@@ -423,6 +440,14 @@ int main(void){
 	if(bcavg<ontavg && bcavg<albavg && bcavg<queavg)
 		printf("British Columbia has the lowest percentage of diabetes (all years and age groups together)\n\n");
 	
+	/* 
+	 Question 3
+	 Indicate the provinces that have diabetes percentages above the national average 
+	 (Canada excluding territories) and the provinces that are below the national average. 
+	 */
+		
+		printf("\nWhich Provinces have a diabetes percentages above,equal or below the national average?\n");
+		printf("--------------------------------------------------------------------------------------\n");
 	if(queavg > canavg)
 		printf("Quebec has a diabetes percentage above the national average\n\n");
 	else if(queavg == canavg)
@@ -464,8 +489,13 @@ int main(void){
 		}
 	}
 	
-	//printf("Highest value: %.2lf Lowest value: %.2lf", highestvalue, lowestvalue);
-	printf("Highest percentage of diabetes in all years and all provinces: \n---------------------------------------------------------------\n");
+	/*
+	 Question 4
+	 Indicate which year and province has the highest percentage of diabetes. 
+	 Do the same for the lowest percentage. In case of a tie, you can mention multiple years 
+	 and provinces.
+	 */
+	printf("\nHighest percentage of diabetes in all years and all provinces: \n---------------------------------------------------------------\n");
 	for(int i = 0; i < row + 1; i++){
 		if(datalist[i].value == highestvalue)
 			printf("%s, %d, %.2lf\n", datalist[i].geo, datalist[i].date, datalist[i].value);
@@ -476,6 +506,9 @@ int main(void){
 			printf("%s, %d, %.2lf\n", datalist[i].geo, datalist[i].date, datalist[i].value);
 	}
 	
+	
+	
+	fprintf(line_plot,"# Year | Canada | Quebec | Ontario | Alberta | British Columbia |\n");
 	fprintf(line_plot, "2015 %lf %lf %lf %lf %lf\n", yearaverage(2015, "Canada (excluding territories)", datalist, row),
 												yearaverage(2015, "Quebec", datalist, row),
 												yearaverage(2015, "Ontario", datalist, row),
@@ -506,6 +539,7 @@ int main(void){
 												yearaverage(2020, "Ontario", datalist, row),
 												yearaverage(2020, "Alberta", datalist, row),
 												yearaverage(2020, "British Columbia", datalist, row));
+
 	fprintf(line_plot, "2021 %lf %lf %lf %lf %lf\n", yearaverage(2021, "Canada (excluding territories)", datalist, row),
 												yearaverage(2021, "Quebec", datalist, row),
 												yearaverage(2021, "Ontario", datalist, row),
@@ -514,6 +548,7 @@ int main(void){
 	
 	double age35_49avg, age50_64avg, age65avg;
 	agegroupaveragereturn("Canada (excluding territories)", datalist, row, &age35_49avg, &age50_64avg, &age65avg);
+fprintf(bar_plot,"#  Age Groups | Percentage of Diabetes |\n");
 	fprintf(bar_plot, "0 35-49 %.2lf\n1 50-64 %.2lf\n2 65+ %.2lf", age35_49avg, age50_64avg, age65avg);
 	
 	fclose(line_plot);
@@ -521,3 +556,4 @@ int main(void){
 	
 	return(0);
 } 
+
