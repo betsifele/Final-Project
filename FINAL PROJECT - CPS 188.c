@@ -49,7 +49,6 @@ double yearlyaverages(char str[], struct data arr[], int row){
 	
 	for(int i = 0; i < row+1; i++){
 		if(!strcmp(arr[i].geo, pt1)){
-			
 			numofinstances++;
 			sumavg += arr[i].value;
 		}
@@ -58,27 +57,22 @@ double yearlyaverages(char str[], struct data arr[], int row){
 		if(!strcmp(arr[i].geo, pt1)){
 			
 			if((arr[i].date == 2015)){
-				
-			num2015ofinstances++;
-			sum2015avg += arr[i].value;
+				num2015ofinstances++;
+				sum2015avg += arr[i].value;
 			
 		   }else if((arr[i].date == 2016)){
-			
-			num2016ofinstances++;
-			sum2016avg += arr[i].value;
+				num2016ofinstances++;
+				sum2016avg += arr[i].value;
 			
 			}else if((arr[i].date == 2017)){
-				
 				num2017ofinstances++;
 				sum2017avg += arr[i].value;
 				
 			}else if((arr[i].date == 2018)){
-				
 				num2018ofinstances++;
 				sum2018avg += arr[i].value;
 				
 			}else if((arr[i].date == 2019)){
-				
 				num2019ofinstances++;
 				sum2019avg += arr[i].value;
 			}else if((arr[i].date == 2020)){
@@ -88,7 +82,7 @@ double yearlyaverages(char str[], struct data arr[], int row){
 				num2021ofinstances++;
 				sum2021avg += arr[i].value;
 			}
-			}
+		}
 	}
 	double avg = sumavg/numofinstances;
 	printf("%s Total Average: %.2lf\n\n", str, avg);
@@ -103,7 +97,27 @@ double yearlyaverages(char str[], struct data arr[], int row){
 	
 	return (avg);
 }
+
+double yearaverage(int year, char str[], struct data arr[], int row){
 	
+	double sumavg = 0, numofinstances = 0;
+	char pt1[50] = "\"";
+	char pt2[50] = "\"";
+	strcat(pt1, str);
+	strcat(pt1,pt2);
+	
+	for(int i = 0; i < row+1; i++){
+		if(!strcmp(arr[i].geo, pt1)){
+			if(arr[i].date == year){
+				sumavg += arr[i].value;
+				numofinstances++;
+			}
+		}
+	}
+	double avg = sumavg/numofinstances;
+	return (avg);
+}
+
 void agegroupaverages(char str[], struct data arr[], int row){
 	double sumavg = 0, numofinstances = 0;
 	double sum35_49avg = 0, num35_49ofinstances = 0;
@@ -117,7 +131,6 @@ void agegroupaverages(char str[], struct data arr[], int row){
 	
 	for(int i = 0; i < row+1; i++){
 		if(!strcmp(arr[i].geo, pt1)){
-			
 			numofinstances++;
 			sumavg += arr[i].value;
 		}
@@ -126,19 +139,14 @@ void agegroupaverages(char str[], struct data arr[], int row){
 		if(!strcmp(arr[i].geo, pt1)){
 			
 			if(!strcmp(arr[i].agegroup, "\"35 to 49 years\"")){
-				
-			num35_49ofinstances++;
-			sum35_49avg += arr[i].value;
-			
+				num35_49ofinstances++;
+				sum35_49avg += arr[i].value;
 		   }else if(!strcmp(arr[i].agegroup, "\"50 to 64 years\"")){
-			
-			num50_64ofinstances++;
-			sum50_64avg += arr[i].value;
+				num50_64ofinstances++;
+				sum50_64avg += arr[i].value;
 			}else if(!strcmp(arr[i].agegroup, "\"65 years and over\"")){
-				
 				num65ofinstances++;
 				sum65avg += arr[i].value;
-				
 			}
 		}
 	}
@@ -154,6 +162,7 @@ int main(void){
 	
 	FILE *file = fopen("statscan_diabetes.csv", "r");
 	FILE *file2 = fopen("statscan_diabetes.csv", "r");
+	FILE *plot = fopen("plotdata.txt", "w");
 	char line [MAX_LINE_LENGTH];
 	char line2 [MAX_LINE_LENGTH];
 	char *token;
@@ -429,5 +438,44 @@ int main(void){
 		if(datalist[i].value == lowestvalue)
 			printf("%s, %d, %.2lf\n", datalist[i].geo, datalist[i].date, datalist[i].value);
 	}
+	
+	fprintf(plot, "2015 %lf %lf %lf %lf %lf\n", yearaverage(2015, "Canada (excluding territories)", datalist, row),
+												yearaverage(2015, "Quebec", datalist, row),
+												yearaverage(2015, "Ontario", datalist, row),
+												yearaverage(2015, "Alberta", datalist, row),
+												yearaverage(2015, "British Columbia", datalist, row));
+	fprintf(plot, "2016 %lf %lf %lf %lf %lf\n", yearaverage(2016, "Canada (excluding territories)", datalist, row),
+												yearaverage(2016, "Quebec", datalist, row),
+												yearaverage(2016, "Ontario", datalist, row),
+												yearaverage(2016, "Alberta", datalist, row),
+												yearaverage(2016, "British Columbia", datalist, row));
+	fprintf(plot, "2017 %lf %lf %lf %lf %lf\n", yearaverage(2017, "Canada (excluding territories)", datalist, row),
+												yearaverage(2017, "Quebec", datalist, row),
+												yearaverage(2017, "Ontario", datalist, row),
+												yearaverage(2017, "Alberta", datalist, row),
+												yearaverage(2017, "British Columbia", datalist, row));
+	fprintf(plot, "2018 %lf %lf %lf %lf %lf\n", yearaverage(2018, "Canada (excluding territories)", datalist, row),
+												yearaverage(2018, "Quebec", datalist, row),
+												yearaverage(2018, "Ontario", datalist, row),
+												yearaverage(2018, "Alberta", datalist, row),
+												yearaverage(2018, "British Columbia", datalist, row));
+	fprintf(plot, "2019 %lf %lf %lf %lf %lf\n", yearaverage(2019, "Canada (excluding territories)", datalist, row),
+												yearaverage(2019, "Quebec", datalist, row),
+												yearaverage(2019, "Ontario", datalist, row),
+												yearaverage(2019, "Alberta", datalist, row),
+												yearaverage(2019, "British Columbia", datalist, row));
+	fprintf(plot, "2020 %lf %lf %lf %lf %lf\n", yearaverage(2020, "Canada (excluding territories)", datalist, row),
+												yearaverage(2020, "Quebec", datalist, row),
+												yearaverage(2020, "Ontario", datalist, row),
+												yearaverage(2020, "Alberta", datalist, row),
+												yearaverage(2020, "British Columbia", datalist, row));
+	fprintf(plot, "2021 %lf %lf %lf %lf %lf\n", yearaverage(2021, "Canada (excluding territories)", datalist, row),
+												yearaverage(2021, "Quebec", datalist, row),
+												yearaverage(2021, "Ontario", datalist, row),
+												yearaverage(2021, "Alberta", datalist, row),
+												yearaverage(2021, "British Columbia", datalist, row));
+	
+	fclose(plot);
+	
 	return(0);
 } 
